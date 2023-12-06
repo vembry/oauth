@@ -1,0 +1,49 @@
+<html>
+
+<body>
+    <div>
+        <div>
+            oauth token:
+        </div>
+        <div>
+            <textarea name="oauth token" disabled id="oauthKey"></textarea>
+        </div>
+    </div>
+    <br>
+    <div>
+        <div>
+            oauth consumption result:
+        </div>
+        <div>
+            <textarea name="oauth result" disabled id="oauthResult"></textarea>
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const params = (new URL(document.location)).searchParams;
+        const token = params.get("token")
+
+        document.getElementById("oauthKey").value = token
+
+        fetch("/api/oauth", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "oauth_token": token
+            })
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                document.getElementById("oauthResult").value = data.oauth_token;
+            });
+
+
+    })
+</script>
+
+</html>
