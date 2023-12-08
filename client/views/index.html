@@ -1,0 +1,26 @@
+<html>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<body>
+    <div>
+        this is home
+    </div>
+    <div id="bucket"></div>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sessionId = Cookies.get("sessionId")
+        fetch(`/api/session/${sessionId}`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(res => {
+            return res.json()
+        }).then(data => {
+            document.getElementById("bucket").innerHTML = JSON.stringify(data, null, 4);
+        })
+    });
+</script>
+
+</html>

@@ -1,5 +1,65 @@
 <html>
-    <body>
+
+<body>
+    <div>
         oauth form
-    </body>
+    </div>
+    <br>
+    <div>
+        <div>
+            username
+        </div>
+        <div>
+            <input type="text" id="txtUsername">
+        </div>
+    </div>
+    <br>
+    <div>
+        <div>
+            <input type="checkbox" id="checkConsent">
+            <label for="checkConsent">consent check</label>
+        </div>
+    </div>
+    <br>
+    <div>
+        <button onclick="doLogin()">login</button>
+    </div>
+</body>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const params = (new URL(document.location)).searchParams;
+        const redirectUrl = params.get("redirect_url");
+    });
+
+    function doLogin() {
+        const username = document.getElementById("txtUsername").value;
+        const consent = document.getElementById("checkConsent").value;
+
+        fetch("/api/oauth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "username": username,
+                "has_consent": (consent === "on"),
+            })
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            const params = (new URL(document.location)).searchParams;
+            const redirectUrl = params.get("redirect_url");
+
+            const newParams = new URLSearchParams({
+                token: data.token,
+            });
+
+            const redirection = `${redirectUrl}?${newParams.toString()}`;
+            window.location.replace(redirection)
+        });
+    }
+
+</script>
+
 </html>
