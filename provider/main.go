@@ -16,6 +16,13 @@ func main() {
 		ctx.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
+	apiRouter := r.Group("/api")
+	apiRouter.POST("/oauth/login", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, map[string]interface{}{
+			"token": "some-random-token",
+		})
+	})
+
 	httpaddress := ":3001"
 	log.Printf("serving %s", httpaddress)
 	if err := r.Run(httpaddress); err != nil {

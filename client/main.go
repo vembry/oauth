@@ -10,8 +10,10 @@ import (
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
-	r.LoadHTMLFiles("./views/login.html")
-	r.LoadHTMLFiles("./views/oauth.html")
+	r.LoadHTMLFiles(
+		"./views/login.html",
+		"./views/oauth.html",
+	)
 
 	// html router
 	r.GET("/login", func(ctx *gin.Context) {
